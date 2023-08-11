@@ -1,19 +1,19 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
 	"go.rikkrome/tokyo/services/user-service/api/routes"
+	"go.rikkrome/tokyo/services/user-service/configs"
 )
 
 func main() {
 
-	log.SetPrefix("user: ")
-	log.Print("...")
+	log.SetPrefix("user-service: ")
 
+	configs.LoadConfigs()
 	// initialize mux router...
 	r := mux.NewRouter()
 	routes.CombineRoutes(r)
@@ -21,7 +21,7 @@ func main() {
 	//handle for api request...
 	http.Handle("/", r)
 
-	fmt.Println("server listining on port 8080")
+	log.Print("server listining on port 8080")
 	http.ListenAndServe("localhost:8080", r)
 
 }
