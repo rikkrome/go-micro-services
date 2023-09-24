@@ -1,4 +1,4 @@
-module go.rikkrome/tokyo/services/user-service
+module go.rikkrome/go-micro-services/services/user-service
 
 go 1.20
 
