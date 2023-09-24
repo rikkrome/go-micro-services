@@ -1,7 +1,7 @@
 package configs
 
 import (
-	"go.rikkrome/tokyo/services/user-service/configs/databases"
+	"go.rikkrome/go-micro-services/services/user-service/configs/databases"
 )
 
 func LoadConfigs() {
