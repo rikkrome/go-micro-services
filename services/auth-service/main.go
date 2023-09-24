@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"go.rikkrome/go-micro-services/services/auth-service/api/routes"
+	"github.com/rikkrome/go-micro-services/services/auth-service/api/routes"
 )
 
 func main() {

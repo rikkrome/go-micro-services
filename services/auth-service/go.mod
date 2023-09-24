@@ -1,4 +1,4 @@
-module go.rikkrome/go-micro-services/services/auth-service
+module github.com/rikkrome/go-micro-services/services/auth-service
 
 go 1.20
 

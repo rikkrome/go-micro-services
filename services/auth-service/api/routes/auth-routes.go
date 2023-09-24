@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"go.rikkrome/go-micro-services/services/auth-service/api/controllers"
+	"github.com/rikkrome/go-micro-services/services/auth-service/api/controllers"
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
