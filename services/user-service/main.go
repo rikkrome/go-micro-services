@@ -13,14 +13,15 @@ func main() {
 
 	log.SetPrefix("user-service: ")
 
-	configs.LoadConfigs()
+	db, _ := configs.InitSQLDatabase()
+	if db != nil {
+		log.Print("main connection Successful passed")
+	}
 	// initialize mux router...
 	r := mux.NewRouter()
-	routes.CombineRoutes(r)
-
+	routes.CombineRoutes(r, db)
 	//handle for api request...
 	http.Handle("/", r)
-
 	log.Print("server listining on port 8080")
 	http.ListenAndServe("localhost:8080", r)
 

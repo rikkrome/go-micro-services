@@ -1,29 +1,23 @@
-package databases
+package configs
 
 import (
 	"log"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+
+	"github.com/rikkrome/go-micro-services/services/user-service/api/models"
 )
 
-var DB *gorm.DB
-
-func InitSQLDatabase() error {
-	log.Print("InitSQLDatabase...")
+func InitSQLDatabase() (db *gorm.DB, err error) {
 	// dsn := "host=localhost user=postgres password=postgres dbname=user_service port=5432 sslmode=disable"
 	dsn := "postgres://postgres:postgres@localhost:5432/user_service?sslmode=disable"
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		log.Fatal("Error Connecting DB")
-		return err
+		log.Fatal("Could not connect to the database:", err)
 	} else {
 		log.Print("Connection Successful")
-		DB = db
 	}
-	return nil
-}
-
-func GetDB() *gorm.DB {
-	return DB
+	db.AutoMigrate(&models.User{})
+	return db, err
 }
