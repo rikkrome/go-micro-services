@@ -1,19 +1,17 @@
 package routes
 
 import (
-	"net/http"
-
 	"github.com/gorilla/mux"
 	"github.com/rikkrome/go-micro-services/services/user-service/api/controllers"
+	"github.com/rikkrome/go-micro-services/services/user-service/api/models"
 )
-
-func handler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Gorilla!\n"))
-}
 
 // this function will handle all user routes...
 // takes a pointer of *mux.Router
-func RegisterUserRoutes(router *mux.Router) {
-	router.HandleFunc("/user/", handler).Methods("POST")
-	router.HandleFunc("/user/health", controllers.HealthCheckHandler).Methods("GET")
+func RegisterUserRoutes(router *mux.Router, userModel *models.UserModel) {
+	router.HandleFunc("/users/", controllers.CreateUserHandler(userModel)).Methods("POST")
+	router.HandleFunc("/users/{id}", controllers.GetUserHandler(userModel)).Methods("GET")
+	router.HandleFunc("/users/all", controllers.GetUsersHandler(userModel)).Methods("GET")
+	router.HandleFunc("/users/all", controllers.DeleteUsersHandler(userModel)).Methods("DELETE")
+	router.HandleFunc("/users/health", controllers.HealthCheckHandler).Methods("GET")
 }
