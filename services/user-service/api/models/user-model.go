@@ -54,10 +54,16 @@ func (m *UserModel) Create(user *dto.CreateUser) error {
 	return result.Error
 }
 
-func (m *UserModel) GetAllUsers() ([]User, error) {
-	var users []User
+func (m *UserModel) GetAllUsers() ([]dto.User, error) {
+	var users []dto.User
 	result := m.DB.Find(&users)
 	return users, result.Error
+}
+
+func (m *UserModel) GetUserById(id string) (dto.User, error) {
+	var user dto.User
+	result := m.DB.First(&user, "id = ?", id)
+	return user, result.Error
 }
 
 func (m *UserModel) DeleteAllUsers() error {

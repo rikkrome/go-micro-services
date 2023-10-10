@@ -10,9 +10,11 @@ type (
 		Password  string `json:"password" validate:"required,min=8"`
 	}
 
-	Users struct {
+	User struct {
+		ID        string `json:"id"`
 		FirstName string `json:"firstname"`
 		LastName  string `json:"lastname"`
 		Username  string `json:"username"`
+		Email     string `json:"email"`
 	}
 )

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/gorilla/mux"
 	"github.com/rikkrome/go-micro-services/services/user-service/api/dto"
 	"github.com/rikkrome/go-micro-services/services/user-service/api/models"
 )
@@ -28,6 +29,29 @@ func CreateUserHandler(m *models.UserModel) http.HandlerFunc {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(map[string]bool{"success": true})
+	})
+}
+
+func GetUserHandler(m *models.UserModel) http.HandlerFunc {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		vars := mux.Vars(r)
+		id := vars["id"]
+		user, err := m.GetUserById(id)
+		if err != nil {
+			http.Error(w, "Could not fetch user", http.StatusInternalServerError)
+			return
+		}
+
+		// Convert the users slice to JSON
+		userJSON, err := json.Marshal(user)
+		if err != nil {
+			http.Error(w, "Could not convert user to JSON", http.StatusInternalServerError)
+			return
+		}
+
+		// Send the JSON response
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(userJSON)
 	})
 }
 
