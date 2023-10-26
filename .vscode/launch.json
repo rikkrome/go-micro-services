@@ -13,18 +13,18 @@
             "debugAdapter":"dlv-dap"
         },
         {
-            "name": "auth-service",
+            "name": "accounts-service",
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "${workspaceFolder}/services/auth-service/main.go",
+            "program": "${workspaceFolder}/services/accounts-service/main.go",
             "debugAdapter":"dlv-dap"
         }
     ],
     "compounds": [
         {
             "name": "Debug: User & Auth services",
-            "configurations": ["user-service", "auth-service"]
+            "configurations": ["accounts-service"]
         }
     ]
 }
