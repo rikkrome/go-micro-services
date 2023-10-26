@@ -1,29 +1,16 @@
 version: "3"
 services:
-  user-service:
-    container_name: "user-service"
+  accounts-service:
+    container_name: "accounts-service"
     image: postgres:alpine
     restart: always
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
-      POSTGRES_DB: user_service
+      POSTGRES_DB: accounts_service
     ports:
       - 5432:5432
     volumes:
-      - user_service_pgdata:/var/lib/postgresql/data
-  auth-service:
-    container_name: "auth-service"
-    image: postgres:alpine
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_DB: auth_service
-    ports:
-      - 5433:5433
-    volumes:
-      - auth_service_pgdata:/var/lib/postgresql/data
+      - accounts_service_pgdata:/var/lib/postgresql/data
 volumes:
-  user_service_pgdata: {}
-  auth_service_pgdata: {}
+  accounts_service_pgdata: {}
