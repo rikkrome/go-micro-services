@@ -32,7 +32,7 @@ func InitSQLDatabase() (accounts_db *gorm.DB, err error) {
 	// auth_db = client.Database("auth_service")
 
 	// user_serive postgres
-	dsn := "postgres://postgres:postgres@localhost:5432/accounts_service?sslmode=disable"
+	dsn := os.Getenv("SQL_DSN")
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
 		logger.Config{
