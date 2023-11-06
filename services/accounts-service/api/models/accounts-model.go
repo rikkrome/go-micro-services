@@ -100,6 +100,12 @@ func (m *AccountModel) GetAccountByEmail(accountData *dto.EmailLogin) (account A
 	return account, result.Error
 }
 
+func (m *AccountModel) GetMine(id *string) (dto.Account, error) {
+	var account dto.Account
+	result := m.DB.First(&account, "id = ?", &id)
+	return account, result.Error
+}
+
 func (m *AccountModel) GetAllAccounts() ([]dto.Account, error) {
 	var accounts []dto.Account
 	result := m.DB.Find(&accounts)
