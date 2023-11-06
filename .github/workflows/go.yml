@@ -37,9 +37,9 @@ jobs:
       - name: Build
         run: |
           cd services/accounts-service
-          go build -v .
+          go build -mod=mod -v .
 
       - name: Test
         run: |
           cd services/accounts-service
-          go test ./...
+          go test -mod=mod ./...
