@@ -5,7 +5,7 @@ name: Go
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "dev" ]
   pull_request:
     branches: [ "main" ]
 
@@ -50,7 +50,6 @@ jobs:
       - name: Build
         run: |
           cd services/accounts-service
-          cat .env
           go build -mod=mod -v .
       - name: Wait for PostgreSQL to start
         run: |
