@@ -26,13 +26,16 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+    env:
+      SECRET_AUTH_KEY: ${{ secrets.GITHUB_SECRET_AUTH_KEY }}
+      SQL_DSN: ${{ secrets.GITHUB_SQL_DSN }}
     steps:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v3
       - name: Check Environment Variables
         run: |
           echo "Checking SQL_DSN..."
-          if [ -z "${{ secrets.SQL_DSN }}" ]; then
+          if [ -z "${{ secrets.GITHUB_SQL_DSN }}" ]; then
             echo "SQL_DSN is not set."
             exit 1
           else
@@ -40,17 +43,17 @@ jobs:
           fi
 
           echo "Checking SECRET_AUTH_KEY..."
-          if [ -z "${{ secrets.SECRET_AUTH_KEY }}" ]; then
+          if [ -z "${{ secrets.GITHUB_SECRET_AUTH_KEY }}" ]; then
             echo "SECRET_AUTH_KEY is not set."
             exit 1
           else
             echo "SECRET_AUTH_KEY is set."
           fi
-      - name: Create .env file
-        run: |
-          cd services/accounts-service
-          echo "SECRET_AUTH_KEY=${{ secrets.SECRET_AUTH_KEY }}" >> .env
-          echo "SQL_DSN=${{ secrets.SQL_DSN }}" >> .env
+      # - name: Create .env file
+      #   run: |
+      #     cd services/accounts-service
+      #     echo "SECRET_AUTH_KEY=${{ secrets.GITHUB_SECRET_AUTH_KEY }}" >> .env
+      #     echo "SQL_DSN=${{ secrets.GITHUB_SQL_DSN }}" >> .env
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
