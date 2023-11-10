@@ -3,6 +3,9 @@ package dto
 import "github.com/google/uuid"
 
 type (
+	SuccessResponse struct {
+		Success bool `json:"success"`
+	}
 	EmailSignUp struct {
 		FirstName string `json:"firstname" validate:"required"`
 		LastName  string `json:"lastname" validate:"required"`

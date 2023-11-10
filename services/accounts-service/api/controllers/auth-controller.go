@@ -13,10 +13,6 @@ import (
 	"github.com/rikkrome/go-micro-services/services/accounts-service/api/models"
 )
 
-type JsonSuccessResponse struct {
-	Success bool `json:"success"`
-}
-
 func SignUpHandler(m *models.AccountModel) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		var (
@@ -194,7 +190,7 @@ func DeleteMineHandler(m *models.AccountModel) http.HandlerFunc {
 		} else {
 			http.Error(w, "Invalid token", http.StatusInternalServerError)
 		}
-		response := JsonSuccessResponse{Success: true}
+		response := dto.SuccessResponse{Success: true}
 		responseJSON, err := json.Marshal(response)
 		if err != nil {
 			http.Error(w, "Could not convert user to JSON", http.StatusInternalServerError)

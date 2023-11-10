@@ -61,7 +61,8 @@ jobs:
       
       - name: Test
         env:
-          SQL_DSN: postgres://postgres:postgres@localhost:5432/accounts_service?sslmode=disable
+          SECRET_AUTH_KEY: ${{ secrets.SECRET_AUTH_KEY }}
+          SQL_DSN: $SQL_DSN
         run: |
           cd services/accounts-service
           go test -mod=mod ./...
