@@ -13,6 +13,10 @@ import (
 	"github.com/rikkrome/go-micro-services/services/accounts-service/api/models"
 )
 
+type JsonSuccessResponse struct {
+	Success bool `json:"success"`
+}
+
 func SignUpHandler(m *models.AccountModel) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		var (
@@ -148,5 +152,56 @@ func MineHandler(m *models.AccountModel) http.HandlerFunc {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 		w.Write(accountJSON)
+	})
+}
+
+func DeleteMineHandler(m *models.AccountModel) http.HandlerFunc {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		authorizationHeader := r.Header.Get("Authorization")
+		parts := strings.Split(authorizationHeader, " ")
+		if len(parts) != 2 || strings.ToLower(parts[0]) != "bearer" {
+			http.Error(w, "Authorization header format must be Bearer {token}", http.StatusUnauthorized)
+			return
+		}
+		tokenString := parts[1]
+
+		base64Key := os.Getenv("SECRET_AUTH_KEY")
+		// Decode the Base64 encoded key
+		key, err := base64.StdEncoding.DecodeString(base64Key)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		// Now parse the token TokenClaims
+		parsedToken, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+			return key, nil
+		})
+		if err != nil {
+			fmt.Println("Error parsing token: ", err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		if claims, ok := parsedToken.Claims.(jwt.MapClaims); ok && parsedToken.Valid {
+			if accountIdValue, ok := claims["id"]; ok {
+				if accountId, ok := accountIdValue.(string); ok {
+					err = m.DeleteAccount(&accountId)
+					if err != nil {
+						http.Error(w, err.Error(), http.StatusInternalServerError)
+						return
+					}
+				}
+			}
+		} else {
+			http.Error(w, "Invalid token", http.StatusInternalServerError)
+		}
+		response := JsonSuccessResponse{Success: true}
+		responseJSON, err := json.Marshal(response)
+		if err != nil {
+			http.Error(w, "Could not convert user to JSON", http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write(responseJSON)
 	})
 }

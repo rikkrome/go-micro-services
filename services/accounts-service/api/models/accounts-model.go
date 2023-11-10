@@ -106,6 +106,11 @@ func (m *AccountModel) GetMine(id *string) (dto.Account, error) {
 	return account, result.Error
 }
 
+func (m *AccountModel) DeleteAccount(id *string) error {
+	result := m.DB.Delete(&dto.Account{}, &id)
+	return result.Error
+}
+
 func (m *AccountModel) GetAllAccounts() ([]dto.Account, error) {
 	var accounts []dto.Account
 	result := m.DB.Find(&accounts)
