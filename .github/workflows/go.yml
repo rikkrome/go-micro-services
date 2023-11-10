@@ -25,14 +25,14 @@ jobs:
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
-           --health-retries 5
+          --health-retries 5
     steps:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v3
       - name: Check Environment Variables
         run: |
           echo "Checking SQL_DSN..."
-          if [ -z "${{ env.SQL_DSN }}" ]; then
+          if [ -z "${{ secrets.SQL_DSN }}" ]; then
             echo "SQL_DSN is not set."
             exit 1
           else
@@ -50,7 +50,7 @@ jobs:
         run: |
           cd services/accounts-service
           echo "SECRET_AUTH_KEY=${{ secrets.SECRET_AUTH_KEY }}" >> .env
-          echo "SQL_DSN=${{ env.SQL_DSN }}" >> .env
+          echo "SQL_DSN=${{ secrets.SQL_DSN }}" >> .env
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
