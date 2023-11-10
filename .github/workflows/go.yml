@@ -32,8 +32,8 @@ jobs:
       - name: Create .env file
         run: |
           cd services/accounts-service
-          echo "SECRET_AUTH_KEY=${{ secrets.GITHUB_SECRET_AUTH_KEY }}" >> .env
-          echo "SQL_DSN=${{ secrets.GITHUB_SQL_DSN }}" >> .env
+          echo "SECRET_AUTH_KEY=${{ secrets.SECRET_AUTH_KEY }}" >> .env
+          echo "SQL_DSN=${{ secrets.SQL_DSN }}" >> .env
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
