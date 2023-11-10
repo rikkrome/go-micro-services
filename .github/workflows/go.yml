@@ -29,11 +29,11 @@ jobs:
     steps:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v3
-      - name: Create .env file
-        run: |
-          cd services/accounts-service
-          echo "SECRET_AUTH_KEY=${{ secrets.SECRET_AUTH_KEY }}" >> .env
-          echo "SQL_DSN=${{ secrets.SQL_DSN }}" >> .env
+      # - name: Create .env file
+      #   run: |
+      #     cd services/accounts-service
+      #     echo "SECRET_AUTH_KEY=${{ secrets.SECRET_AUTH_KEY }}" >> .env
+      #     echo "SQL_DSN=${{ secrets.SQL_DSN }}" >> .env
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
@@ -63,6 +63,7 @@ jobs:
       - name: Test
         run: |
           cd services/accounts-service
-
+          echo "SECRET_AUTH_KEY=${{ secrets.SECRET_AUTH_KEY }}" >> .env
+          echo "SQL_DSN=${{ secrets.SQL_DSN }}" >> .env
           go test -mod=mod ./... -v
       
