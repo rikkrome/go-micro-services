@@ -47,7 +47,11 @@ jobs:
         run: |
           cd services/accounts-service
           go mod download
-
+      - name: Create .env file
+        run: |
+          cd services/accounts-service
+          echo "SECRET_AUTH_KEY=${{ secrets.SECRET_AUTH_KEY }}" >> .env
+          echo "SQL_DSN=${{ $SQL_DSN }}" >> .env
       - name: Build
         run: |
           cd services/accounts-service
@@ -60,9 +64,6 @@ jobs:
           done
       
       - name: Test
-        env:
-          SECRET_AUTH_KEY: ${{ secrets.SECRET_AUTH_KEY }}
-          SQL_DSN: $SQL_DSN
         run: |
           cd services/accounts-service
           go test -mod=mod ./...
