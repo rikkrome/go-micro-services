@@ -51,7 +51,7 @@ jobs:
         run: |
           cd services/accounts-service
           echo "SECRET_AUTH_KEY=${{ secrets.SECRET_AUTH_KEY }}" >> .env
-          echo "SQL_DSN=$SQL_DSN" >> .env
+          echo "SQL_DSN=${{ env.SQL_DSN }}" >> .env
       - name: Build
         run: |
           cd services/accounts-service
@@ -66,5 +66,5 @@ jobs:
       - name: Test
         run: |
           cd services/accounts-service
-          go test -mod=mod ./...
+          go test -mod=mod ./... -v
       
