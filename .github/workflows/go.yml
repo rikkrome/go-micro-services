@@ -64,6 +64,8 @@ jobs:
         run: |
           cd services/accounts-service
           echo "SECRET_AUTH_KEY=${{ secrets.SECRET_AUTH_KEY }}" >> .env
-          echo "SQL_DSN=postgres://postgres:postgres@localhost:5432/accounts_service?sslmode=disable" >> .env
+          echo "ACCOUNTS_POSTGRES_USER=${{ secrets.ACCOUNTS_POSTGRES_USER }}" >> .env
+          echo "ACCOUNTS_POSTGRES_PASSWORD=${{ secrets.ACCOUNTS_POSTGRES_PASSWORD }}" >> .env
+          echo "ACCOUNTS_POSTGRES_DB=${{ secrets.ACCOUNTS_POSTGRES_DB }}" >> .env
           go test -mod=mod ./... -v
       
