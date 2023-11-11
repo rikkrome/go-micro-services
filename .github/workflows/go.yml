@@ -17,9 +17,9 @@ jobs:
       postgres:
         image: postgres:alpine
         env:
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_USER: postgres
-          POSTGRES_DB: accounts_service
+          POSTGRES_PASSWORD: ${{ secrets.ACCOUNTS_POSTGRES_PASSWORD }}
+          POSTGRES_USER: ${{ secrets.ACCOUNTS_POSTGRES_USER }}
+          POSTGRES_DB: ${{ secrets.ACCOUNTS_POSTGRES_DB }}
         ports:
           - 5432:5432
         options: 
@@ -30,19 +30,13 @@ jobs:
     steps:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v3
-      - name: Check Environment Variables
+      - name: Create .env file
         run: |
-          if [ -z "${{ secrets.SECRET_AUTH_KEY }}" ]; then
-            echo "SECRET_AUTH_KEY is not set."
-            exit 1
-          else
-            echo "SECRET_AUTH_KEY is set."
-          fi
-      # - name: Create .env file
-      #   run: |
-      #     cd services/accounts-service
-      #     echo "SECRET_AUTH_KEY=${{ secrets.SECRET_AUTH_KEY }}" >> .env
-      #     echo "SQL_DSN=${{ secrets.SQL_DSN }}" >> .env
+          cd services/accounts-service
+          echo "SECRET_AUTH_KEY=${{ secrets.SECRET_AUTH_KEY }}" >> .env
+          echo "ACCOUNTS_POSTGRES_USER=${{ secrets.ACCOUNTS_POSTGRES_USER }}" >> .env
+          echo "ACCOUNTS_POSTGRES_PASSWORD=${{ secrets.ACCOUNTS_POSTGRES_PASSWORD }}" >> .env
+          echo "ACCOUNTS_POSTGRES_DB=${{ secrets.ACCOUNTS_POSTGRES_DB }}" >> .env
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
@@ -68,13 +62,8 @@ jobs:
             echo "Waiting for PostgreSQL to start..."
             sleep 2
           done
-      
       - name: Test
         run: |
           cd services/accounts-service
-          echo "SECRET_AUTH_KEY=${{ secrets.SECRET_AUTH_KEY }}" >> .env
-          echo "ACCOUNTS_POSTGRES_USER=${{ secrets.ACCOUNTS_POSTGRES_USER }}" >> .env
-          echo "ACCOUNTS_POSTGRES_PASSWORD=${{ secrets.ACCOUNTS_POSTGRES_PASSWORD }}" >> .env
-          echo "ACCOUNTS_POSTGRES_DB=${{ secrets.ACCOUNTS_POSTGRES_DB }}" >> .env
           go test -mod=mod ./... -v
       
