@@ -1,6 +1,7 @@
 package configs
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"time"
@@ -32,7 +33,10 @@ func InitSQLDatabase() (accounts_db *gorm.DB, err error) {
 	// auth_db = client.Database("auth_service")
 
 	// user_serive postgres
-	dsn := os.Getenv("SQL_DSN")
+	ACCOUNTS_POSTGRES_USER := os.Getenv("ACCOUNTS_POSTGRES_USER")
+	ACCOUNTS_POSTGRES_PASSWORD := os.Getenv("ACCOUNTS_POSTGRES_PASSWORD")
+	ACCOUNTS_POSTGRES_DB := os.Getenv("ACCOUNTS_POSTGRES_DB")
+	dsn := fmt.Sprintf("postgres://%s:%s@localhost:5432/%s?sslmode=disable", ACCOUNTS_POSTGRES_USER, ACCOUNTS_POSTGRES_PASSWORD, ACCOUNTS_POSTGRES_DB) // "postgres://postgres:postgres@localhost:5432/accounts_service?sslmode=disable"
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
 		logger.Config{
