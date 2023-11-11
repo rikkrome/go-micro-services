@@ -29,6 +29,19 @@ jobs:
     steps:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v3
+      - name: Check Environment Variables
+        run: |
+          if [ -z "${{ secrets.SECRET_AUTH_KEY }}" ]; then
+            echo "SECRET_AUTH_KEY is not set."
+          else
+            echo "SECRET_AUTH_KEY is set."
+          fi
+          if [ -z "${{ secrets.CI_ENV_SECRET_AUTH_KEY }}" ]; then
+            echo "CI_ENV_SECRET_AUTH_KEY is not set."
+            exit 1
+          else
+            echo "CI_ENV_SECRET_AUTH_KEY is set."
+          fi
       # - name: Create .env file
       #   run: |
       #     cd services/accounts-service
