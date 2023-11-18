@@ -11,6 +11,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/rikkrome/go-micro-services/services/accounts-service/api/dto"
 	"github.com/rikkrome/go-micro-services/services/accounts-service/api/models"
+	"github.com/rikkrome/go-micro-services/shared/auth"
 )
 
 func SignUpHandler(m *models.AccountModel) http.HandlerFunc {
@@ -28,7 +29,7 @@ func SignUpHandler(m *models.AccountModel) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		newTokens, err := m.NewToken(newAccount.ID.String())
+		newTokens, err := auth.NewToken(newAccount.ID.String())
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
