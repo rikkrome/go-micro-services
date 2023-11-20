@@ -54,7 +54,8 @@ jobs:
           go mod download
       - name: Build
         run: |
-          go build ./services/accounts-service -mod=mod -v .
+          cd services/accounts-service
+          go build -mod=mod -v .
       - name: Wait for PostgreSQL to start
         run: |
           until pg_isready -h localhost -p 5432; do

@@ -18,6 +18,5 @@
 # vendor/
 
 # Go workspace file
-go.work
 services/accounts-service/.env
 .DS_Store
