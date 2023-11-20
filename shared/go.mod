@@ -1,5 +1,0 @@
-module github.com/rikkrome/go-micro-services/shared
-
-go 1.20
-
-require github.com/golang-jwt/jwt/v5 v5.1.0
